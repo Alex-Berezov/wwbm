@@ -6,8 +6,3 @@ export const Root = styled.div`
   display: flex;
   flex-direction: column;
 `
-
-export const QuestionsBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-`
