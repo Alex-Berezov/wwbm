@@ -2,7 +2,11 @@ import React, { createContext } from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App'
-import { IStepList } from './types/common'
+import { Provider } from 'react-redux'
+import { setupStore } from './store/store'
+import { IStepList } from './models/IStepList'
+
+const store = setupStore()
 
 const StepList: IStepList[] = [
   { id: 1, money: '$ 100' },
@@ -26,7 +30,9 @@ export const ThemeContext = createContext<IStepList[]>(StepList)
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
-  <ThemeContext.Provider value={StepList}>
-    <App />
-  </ThemeContext.Provider>
+  <Provider store={store}>
+    <ThemeContext.Provider value={StepList}>
+      <App />
+    </ThemeContext.Provider>
+  </Provider>
 )
