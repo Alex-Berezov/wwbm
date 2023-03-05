@@ -6,14 +6,17 @@ import fifty from '../../../../assets/images/fifty.png'
 import help from '../../../../assets/images/help.png'
 import call from '../../../../assets/images/call.png'
 import { HexagonButton } from '../../../../UI/HexagonButton'
+import { useAppSelector } from '../../../../hooks/redux'
 
 const HelpBlock = () => {
   const [fiftyModalActive, setFiftyModalActive] = useState(false)
   const [helpModalActive, setHelpModalActive] = useState(false)
   const [callModalActive, setCallModalActive] = useState(false)
 
+  const { gameHasStarted } = useAppSelector((state) => state.questionsReducer)
+
   return (
-    <Styled.Root>
+    <Styled.Root gameHasStarted={gameHasStarted}>
       <Styled.HelpButtonsBlock>
         <Styled.HelpButton>
           <Styled.HelpImage

@@ -1,8 +1,12 @@
 import styled from 'styled-components'
 
-export const Root = styled.div`
+interface HelpStylesProps {
+  gameHasStarted: boolean
+}
+
+export const Root = styled.div<HelpStylesProps>`
   width: 100%;
-  display: flex;
+  display: ${(props) => (props.gameHasStarted ? 'flex' : 'none')};
   justify-content: center;
   align-items: center;
   margin: 40px 0;

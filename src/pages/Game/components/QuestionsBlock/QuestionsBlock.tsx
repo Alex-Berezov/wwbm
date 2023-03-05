@@ -1,10 +1,13 @@
 import React from 'react'
+import { useAppSelector } from '../../../../hooks/redux'
 import { HexagonButton } from '../../../../UI/HexagonButton'
 import * as Styled from './styles'
 
 const QuestionsBlock = () => {
+  const { gameHasStarted } = useAppSelector((state) => state.questionsReducer)
+
   return (
-    <Styled.Root>
+    <Styled.Root gameHasStarted={gameHasStarted}>
       <Styled.QuestionBlock>
         <HexagonButton
           width='93%'

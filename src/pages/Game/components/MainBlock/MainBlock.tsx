@@ -2,20 +2,22 @@ import React, { FC, useState, useContext } from 'react'
 import * as Styled from './styles'
 import { ThemeContext } from './../../../../index'
 import { HexagonButton } from '../../../../UI/HexagonButton'
-
+import { useAppSelector } from '../../../../hooks/redux'
 import mainImg from '../../../../assets/images/main-img.png'
 
 const MainBlock: FC = () => {
   const [currentStep, setCurrentStep] = useState(1)
   const stepList = useContext(ThemeContext)
 
+  const { gameHasStarted } = useAppSelector((state) => state.questionsReducer)
+
   return (
-    <Styled.Root>
-      <Styled.ImageBlock>
+    <Styled.Root gameHasStarted={gameHasStarted}>
+      <Styled.ImageBlock gameHasStarted={gameHasStarted}>
         <Styled.Image src={mainImg} alt='Main image' />
       </Styled.ImageBlock>
 
-      <Styled.QuestionsList>
+      <Styled.QuestionsList gameHasStarted={gameHasStarted}>
         {stepList.reverse().map((step) => {
           return step.id === currentStep ? (
             <HexagonButton

@@ -1,17 +1,19 @@
 import styled from 'styled-components'
 
 interface MainBlockStylesProps {
-  current: boolean
+  current?: boolean
+  gameHasStarted?: boolean
 }
 
-export const Root = styled.div`
+export const Root = styled.div<MainBlockStylesProps>`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${(props) =>
+    props.gameHasStarted ? 'space-between' : 'center'};
   align-items: center;
 `
 
-export const ImageBlock = styled.div`
-  width: 49%;
+export const ImageBlock = styled.div<MainBlockStylesProps>`
+  width: ${(props) => (props.gameHasStarted ? '49%' : '60%')};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,9 +21,9 @@ export const ImageBlock = styled.div`
 
 export const Image = styled.img``
 
-export const QuestionsList = styled.div`
-  width: 20%;
-  display: flex;
+export const QuestionsList = styled.div<MainBlockStylesProps>`
+  width: ${(props) => (props.gameHasStarted ? '20%' : '0%')};
+  display: ${(props) => (props.gameHasStarted ? 'flex' : 'none')};
   flex-direction: column;
   margin-left: 30px;
 `

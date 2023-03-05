@@ -1,11 +1,25 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useCallback } from 'react'
 import { HexagonButton } from '../../../../UI/HexagonButton'
 import * as Styled from './styles'
 import useSettingsInput from './../../hooks/useSettingsInput'
+import { useAppDispatch, useAppSelector } from './../../../../hooks/redux'
+import { fetchQuestions } from './../../../../store/reducers/ActionCreators'
 
 const SettingsBlock: FC = () => {
-  const [gameHasStarted, setGameHasStarted] = useState(false)
-  const questionsValue = useSettingsInput(15, { isInt: true })
+  const dispatch = useAppDispatch()
+  const { questions, gameHasStarted, questionsAmount } = useAppSelector(
+    (state) => state.questionsReducer
+  )
+
+  const questionsValue = useSettingsInput(questionsAmount, { isInt: true })
+
+  console.log('====================================')
+  console.log('questions >>', questions)
+  console.log('====================================')
+
+  const startGame = useCallback(() => {
+    dispatch(fetchQuestions(questionsValue.value))
+  }, [questionsValue.value])
 
   return (
     <Styled.Root>
@@ -20,31 +34,17 @@ const SettingsBlock: FC = () => {
         <Styled.InputError>{questionsValue.errors}</Styled.InputError>
       </Styled.QuestionsValueBlock>
 
-      {!gameHasStarted ? (
-        <Styled.StartButton onClick={() => setGameHasStarted(true)}>
-          <HexagonButton
-            padding='4px'
-            color='white'
-            background='green'
-            size='15px'
-            width='100px'
-          >
-            Поехали
-          </HexagonButton>
-        </Styled.StartButton>
-      ) : (
-        <Styled.StartButton onClick={() => setGameHasStarted(false)}>
-          <HexagonButton
-            padding='4px'
-            color='black'
-            background='grey'
-            size='15px'
-            width='100px'
-          >
-            Сначала
-          </HexagonButton>
-        </Styled.StartButton>
-      )}
+      <Styled.StartButton onClick={() => startGame()}>
+        <HexagonButton
+          padding='4px'
+          color='white'
+          background='green'
+          size='15px'
+          width='100px'
+        >
+          {!gameHasStarted ? 'Поехали' : 'Сначала'}
+        </HexagonButton>
+      </Styled.StartButton>
     </Styled.Root>
   )
 }

@@ -1,7 +1,11 @@
 import styled from 'styled-components'
 
-export const Root = styled.div`
-  display: flex;
+interface QuestionsProps {
+  gameHasStarted: boolean
+}
+
+export const Root = styled.div<QuestionsProps>`
+  display: ${(props) => (props.gameHasStarted ? 'flex' : 'none')};
   flex-direction: column;
 `
 
