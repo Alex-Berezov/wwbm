@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, FC } from 'react'
 import * as Styled from './styles'
 import { Modal } from '../../../../UI/Modal'
 
@@ -8,12 +8,14 @@ import call from '../../../../assets/images/call.png'
 import { HexagonButton } from '../../../../UI/HexagonButton'
 import { useAppSelector } from '../../../../hooks/redux'
 
-const HelpBlock = () => {
+interface HelpBlockProps {
+  gameHasStarted: boolean
+}
+
+const HelpBlock: FC<HelpBlockProps> = ({ gameHasStarted }) => {
   const [fiftyModalActive, setFiftyModalActive] = useState(false)
   const [helpModalActive, setHelpModalActive] = useState(false)
   const [callModalActive, setCallModalActive] = useState(false)
-
-  const { gameHasStarted } = useAppSelector((state) => state.questionsReducer)
 
   return (
     <Styled.Root gameHasStarted={gameHasStarted}>

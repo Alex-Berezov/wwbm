@@ -6,7 +6,9 @@ export const fetchQuestions = createAsyncThunk(
   async (value: number, thunkAPI) => {
     try {
       const response = await questionsAPI.getQuestions(value)
-      return response.data
+      // Почему я не могу обратиться к полю results у объекта response.data???
+      //@ts-ignore
+      return response.data.results
     } catch (e) {
       return thunkAPI.rejectWithValue('Ошибка загрузки вопросов')
     }

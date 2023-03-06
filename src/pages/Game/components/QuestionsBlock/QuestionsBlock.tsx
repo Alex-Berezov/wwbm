@@ -1,10 +1,61 @@
-import React from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useAppSelector } from '../../../../hooks/redux'
 import { HexagonButton } from '../../../../UI/HexagonButton'
 import * as Styled from './styles'
+import Modal from './../../../../UI/Modal/Modal'
 
-const QuestionsBlock = () => {
-  const { gameHasStarted } = useAppSelector((state) => state.questionsReducer)
+interface QuestionsBlockProps {
+  currentStep: number
+  setCurrentStep: (currentStep: number) => void
+  numberOfQuestions: number
+  gameHasStarted: boolean
+}
+
+const QuestionsBlock: FC<QuestionsBlockProps> = ({
+  currentStep,
+  setCurrentStep,
+  numberOfQuestions,
+  gameHasStarted,
+}) => {
+  const [question, setQuestion] = useState<string>('')
+  const [answers, setAnswers] = useState<string[]>([])
+  const [correct, setCorrect] = useState('')
+  const [selected, setSelected] = useState('')
+  const [gameOver, setGameOver] = useState(false)
+  const [victory, setVictory] = useState(false)
+  const { questions } = useAppSelector((state) => state.questionsReducer)
+
+  // console.log('====================================')
+  // console.log('currentStep >>', currentStep)
+  // console.log('====================================')
+
+  console.log('====================================')
+  console.log('gameHasStarted >>', gameHasStarted)
+  console.log('====================================')
+
+  useEffect(() => {
+    gameHasStarted &&
+      setAnswers([
+        ...questions[currentStep]?.incorrect_answers,
+        questions[currentStep]?.correct_answer,
+      ])
+    gameHasStarted && setQuestion(questions[currentStep]?.question)
+  }, [gameHasStarted, questions, currentStep])
+
+  const selectedAnswer = (answer: string) => {
+    setCorrect(questions[currentStep]?.correct_answer)
+    setSelected(answer)
+
+    answer === questions[currentStep]?.correct_answer
+      ? setTimeout(() => {
+          currentStep < numberOfQuestions
+            ? setCurrentStep(currentStep + 1)
+            : setVictory(true)
+        }, 2000)
+      : setTimeout(() => {
+          setGameOver(true)
+        }, 2000)
+  }
 
   return (
     <Styled.Root gameHasStarted={gameHasStarted}>
@@ -17,52 +68,40 @@ const QuestionsBlock = () => {
           color='#000000'
           padding='10px'
         >
-          Question
+          {question}
         </HexagonButton>
       </Styled.QuestionBlock>
 
       <Styled.AnswersBlock>
-        <HexagonButton
-          width='45%'
-          minHeight='40px'
-          size='25px'
-          background='#f0f0f0'
-          color='#000000'
-          padding='5px'
-        >
-          Answer 1
-        </HexagonButton>
-        <HexagonButton
-          width='45%'
-          minHeight='40px'
-          size='25px'
-          background='#f0f0f0'
-          color='#000000'
-          padding='5px'
-        >
-          Answer 2
-        </HexagonButton>
-        <HexagonButton
-          width='45%'
-          minHeight='40px'
-          size='25px'
-          background='#f0f0f0'
-          color='#000000'
-          padding='5px'
-        >
-          Answer 3
-        </HexagonButton>
-        <HexagonButton
-          width='45%'
-          minHeight='40px'
-          size='25px'
-          background='#f0f0f0'
-          color='#000000'
-          padding='5px'
-        >
-          Answer 4
-        </HexagonButton>
+        {answers.map((answer) => (
+          <HexagonButton
+            key={answer}
+            width='45%'
+            minHeight='40px'
+            size='25px'
+            background={answer === correct ? 'green' : '#f0f0f0'}
+            color='#000000'
+            padding='5px'
+          >
+            {
+              <Styled.AnswerWrapper
+                selected={selected === answer}
+                onClick={() => selectedAnswer(answer)}
+              >
+                {answer}
+              </Styled.AnswerWrapper>
+            }
+          </HexagonButton>
+        ))}
       </Styled.AnswersBlock>
+
+      <Modal active={gameOver} setActive={setGameOver}>
+        Game Over
+      </Modal>
+
+      <Modal active={victory} setActive={setVictory}>
+        Это победа!!!
+      </Modal>
     </Styled.Root>
   )
 }

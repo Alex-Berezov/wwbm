@@ -1,15 +1,39 @@
-import React, { FC, useState, useContext } from 'react'
+import React, { FC, useEffect, useContext, useState } from 'react'
 import * as Styled from './styles'
 import { ThemeContext } from './../../../../index'
 import { HexagonButton } from '../../../../UI/HexagonButton'
 import { useAppSelector } from '../../../../hooks/redux'
 import mainImg from '../../../../assets/images/main-img.png'
+import { IStepList } from './../../../../models/IStepList'
 
-const MainBlock: FC = () => {
-  const [currentStep, setCurrentStep] = useState(1)
+interface MainBlockProps {
+  currentStep: number
+  numberOfQuestions: number
+  setCurrentStep: (num: number) => void
+  gameHasStarted: boolean
+}
+
+const MainBlock: FC<MainBlockProps> = ({
+  currentStep,
+  numberOfQuestions,
+  setCurrentStep,
+  gameHasStarted,
+}) => {
   const stepList = useContext(ThemeContext)
+  const [customStepList, setCustomStepList] = useState<IStepList[]>([])
 
-  const { gameHasStarted } = useAppSelector((state) => state.questionsReducer)
+  // console.log('====================================')
+  // console.log('customStepList >>', customStepList)
+  // console.log('====================================')
+
+  useEffect(() => {
+    setCustomStepList(stepList.slice(0, +numberOfQuestions))
+  }, [gameHasStarted])
+
+  // useEffect(() => {
+  //   customStepList.length > 0 &&
+  //     setCurrentStep(customStepList[customStepList.length - 1].id)
+  // }, [customStepList])
 
   return (
     <Styled.Root gameHasStarted={gameHasStarted}>
@@ -18,7 +42,7 @@ const MainBlock: FC = () => {
       </Styled.ImageBlock>
 
       <Styled.QuestionsList gameHasStarted={gameHasStarted}>
-        {stepList.reverse().map((step) => {
+        {customStepList.map((step: any, i) => {
           return step.id === currentStep ? (
             <HexagonButton
               key={step.id}
@@ -29,13 +53,13 @@ const MainBlock: FC = () => {
               color='#e1a02e'
             >
               <>
-                <Styled.Number>{step.id}</Styled.Number>
+                <Styled.Number>{step.id + 1}</Styled.Number>
                 <Styled.Money>{step.money}</Styled.Money>
               </>
             </HexagonButton>
           ) : (
             <Styled.Step key={step.id} current={step.id === currentStep}>
-              <Styled.Number>{step.id}</Styled.Number>
+              <Styled.Number>{step.id + 1}</Styled.Number>
               <Styled.Money>{step.money}</Styled.Money>
             </Styled.Step>
           )

@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 
 interface QuestionsProps {
-  gameHasStarted: boolean
+  gameHasStarted?: boolean
+  selected?: boolean
 }
 
 export const Root = styled.div<QuestionsProps>`
@@ -25,4 +26,13 @@ export const AnswersBlock = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 20px;
+`
+
+export const AnswerWrapper = styled.span<QuestionsProps>`
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => (props.selected ? 'red' : 'black')};
 `

@@ -2,15 +2,15 @@ import React, { FC } from 'react'
 import * as Styled from './styles'
 
 export interface HexagonButtonProps {
-  children: string | JSX.Element
+  children: string | JSX.Element | JSX.Element[]
   current?: boolean
   width?: string
   minHeight?: string
   color?: string
-  background?: string
+  background?: string | string
   size?: string
   padding: string
-  onClick?: () => void
+  onClick?: () => void | string
 }
 
 const HexagonButton: FC<HexagonButtonProps> = ({

@@ -5,21 +5,31 @@ import useSettingsInput from './../../hooks/useSettingsInput'
 import { useAppDispatch, useAppSelector } from './../../../../hooks/redux'
 import { fetchQuestions } from './../../../../store/reducers/ActionCreators'
 
-const SettingsBlock: FC = () => {
+interface SettingsBlockProps {
+  setNumberOfQuestions: (num: number) => void
+  gameHasStarted: boolean
+  setGameHasStarted: (bool: boolean) => void
+}
+
+const SettingsBlock: FC<SettingsBlockProps> = ({
+  setNumberOfQuestions,
+  gameHasStarted,
+  setGameHasStarted,
+}) => {
   const dispatch = useAppDispatch()
-  const { questions, gameHasStarted, questionsAmount } = useAppSelector(
-    (state) => state.questionsReducer
-  )
+  const { questionsAmount } = useAppSelector((state) => state.questionsReducer)
 
   const questionsValue = useSettingsInput(questionsAmount, { isInt: true })
 
-  console.log('====================================')
-  console.log('questions >>', questions)
-  console.log('====================================')
-
   const startGame = useCallback(() => {
+    setGameHasStarted(true)
+    setNumberOfQuestions(questionsValue.value)
     dispatch(fetchQuestions(questionsValue.value))
-  }, [questionsValue.value])
+
+    setTimeout(() => {
+      window.scrollTo(0, 10000)
+    }, 1500)
+  }, [questionsValue])
 
   return (
     <Styled.Root>

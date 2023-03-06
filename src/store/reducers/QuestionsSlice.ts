@@ -7,7 +7,6 @@ interface QuestionsState {
   isLoading: boolean
   error: string
   questionsAmount: number
-  gameHasStarted: boolean
 }
 
 const initialState: QuestionsState = {
@@ -15,7 +14,6 @@ const initialState: QuestionsState = {
   isLoading: false,
   error: '',
   questionsAmount: 15,
-  gameHasStarted: false,
 }
 
 export const questionsSlice = createSlice({
@@ -33,7 +31,6 @@ export const questionsSlice = createSlice({
       state.isLoading = false
       state.error = ''
       state.questions = action.payload
-      state.gameHasStarted = true
     },
     [fetchQuestions.rejected.type]: (state, action: PayloadAction<string>) => {
       state.isLoading = false
