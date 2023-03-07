@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState, useCallback } from 'react'
 import { useAppSelector } from '../../../../hooks/redux'
 import { HexagonButton } from '../../../../UI/HexagonButton'
 import * as Styled from './styles'
@@ -32,12 +32,14 @@ const QuestionsBlock: FC<QuestionsBlockProps> = ({
   useEffect(() => {
     gameHasStarted &&
       questions.length > 0 &&
+      questions.length > currentStep &&
       setAnswers([
         ...questions[currentStep]?.incorrect_answers,
         questions[currentStep]?.correct_answer,
       ])
     gameHasStarted &&
       questions.length > 0 &&
+      questions.length > currentStep &&
       setQuestion(questions[currentStep]?.question)
   }, [gameHasStarted, questions, currentStep])
 
@@ -47,7 +49,7 @@ const QuestionsBlock: FC<QuestionsBlockProps> = ({
 
     answer === questions[currentStep]?.correct_answer
       ? setTimeout(() => {
-          currentStep < numberOfQuestions
+          currentStep < questions.length
             ? setCurrentStep(currentStep + 1)
             : setVictory(true)
         }, 2000)
@@ -55,6 +57,10 @@ const QuestionsBlock: FC<QuestionsBlockProps> = ({
           setGameOver(true)
         }, 2000)
   }
+
+  useEffect(() => {
+    currentStep === questions.length && setVictory(true)
+  }, [currentStep, questions.length])
 
   useEffect(() => {
     fiftyFifty &&
@@ -67,9 +73,11 @@ const QuestionsBlock: FC<QuestionsBlockProps> = ({
 
   useEffect(() => {
     setTimeout(() => {
-      gameOver && setGameHasStarted(false)
-    }, 3000)
-  }, [gameOver, setGameHasStarted])
+      ;(gameOver || victory) && setGameHasStarted(false)
+      setGameOver(false)
+      setVictory(false)
+    }, 2000)
+  }, [gameOver, setGameHasStarted, victory])
 
   return (
     <Styled.Root gameHasStarted={gameHasStarted}>
