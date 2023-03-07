@@ -2,7 +2,6 @@ import React, { FC, useEffect, useContext, useState } from 'react'
 import * as Styled from './styles'
 import { ThemeContext } from './../../../../index'
 import { HexagonButton } from '../../../../UI/HexagonButton'
-import { useAppSelector } from '../../../../hooks/redux'
 import mainImg from '../../../../assets/images/main-img.png'
 import { IStepList } from './../../../../models/IStepList'
 
@@ -22,18 +21,9 @@ const MainBlock: FC<MainBlockProps> = ({
   const stepList = useContext(ThemeContext)
   const [customStepList, setCustomStepList] = useState<IStepList[]>([])
 
-  // console.log('====================================')
-  // console.log('customStepList >>', customStepList)
-  // console.log('====================================')
-
   useEffect(() => {
     setCustomStepList(stepList.slice(0, +numberOfQuestions))
-  }, [gameHasStarted])
-
-  // useEffect(() => {
-  //   customStepList.length > 0 &&
-  //     setCurrentStep(customStepList[customStepList.length - 1].id)
-  // }, [customStepList])
+  }, [gameHasStarted, numberOfQuestions])
 
   return (
     <Styled.Root gameHasStarted={gameHasStarted}>

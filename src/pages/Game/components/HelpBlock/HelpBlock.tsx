@@ -1,21 +1,31 @@
 import React, { useState, FC } from 'react'
 import * as Styled from './styles'
 import { Modal } from '../../../../UI/Modal'
+import { HexagonButton } from '../../../../UI/HexagonButton'
 
 import fifty from '../../../../assets/images/fifty.png'
 import help from '../../../../assets/images/help.png'
 import call from '../../../../assets/images/call.png'
-import { HexagonButton } from '../../../../UI/HexagonButton'
-import { useAppSelector } from '../../../../hooks/redux'
 
 interface HelpBlockProps {
   gameHasStarted: boolean
+  fiftyFifty: boolean
+  setFiftyFifty: (bool: boolean) => void
 }
 
-const HelpBlock: FC<HelpBlockProps> = ({ gameHasStarted }) => {
+const HelpBlock: FC<HelpBlockProps> = ({
+  gameHasStarted,
+  setFiftyFifty,
+  fiftyFifty,
+}) => {
   const [fiftyModalActive, setFiftyModalActive] = useState(false)
   const [helpModalActive, setHelpModalActive] = useState(false)
   const [callModalActive, setCallModalActive] = useState(false)
+
+  const selectedFiftyFifty = () => {
+    setFiftyFifty(true)
+    setFiftyModalActive(false)
+  }
 
   return (
     <Styled.Root gameHasStarted={gameHasStarted}>
@@ -45,37 +55,47 @@ const HelpBlock: FC<HelpBlockProps> = ({ gameHasStarted }) => {
 
       <Modal active={fiftyModalActive} setActive={setFiftyModalActive}>
         <Styled.FiftyModalBlock>
-          <Styled.FiftyModalText>
-            Мы уберем два не верных варианта.
-          </Styled.FiftyModalText>
-          <Styled.FiftyModalText>
-            Уверен, что хочешь воспользоватьтся подсказкой?
-          </Styled.FiftyModalText>
-          <Styled.FiftyModalButtons>
-            <Styled.FiftyModalButton>
-              <HexagonButton
-                padding='5px'
-                background='green'
-                color='white'
-                width='50%'
-                size='15px'
-              >
-                Да
-              </HexagonButton>
-            </Styled.FiftyModalButton>
+          {fiftyFifty ? (
+            <Styled.FiftyModalText>
+              Подсказка уже использована
+            </Styled.FiftyModalText>
+          ) : (
+            <>
+              <Styled.FiftyModalText>
+                Мы уберем два не верных варианта.
+              </Styled.FiftyModalText>
+              <Styled.FiftyModalText>
+                Уверен, что хочешь воспользоватьтся подсказкой?
+              </Styled.FiftyModalText>
+              <Styled.FiftyModalButtons>
+                <Styled.FiftyModalButton onClick={() => selectedFiftyFifty()}>
+                  <HexagonButton
+                    padding='5px'
+                    background='green'
+                    color='white'
+                    width='50%'
+                    size='15px'
+                  >
+                    Да
+                  </HexagonButton>
+                </Styled.FiftyModalButton>
 
-            <Styled.FiftyModalButton onClick={() => setFiftyModalActive(false)}>
-              <HexagonButton
-                padding='5px'
-                background='red'
-                color='white'
-                width='50%'
-                size='15px'
-              >
-                Нет
-              </HexagonButton>
-            </Styled.FiftyModalButton>
-          </Styled.FiftyModalButtons>
+                <Styled.FiftyModalButton
+                  onClick={() => setFiftyModalActive(false)}
+                >
+                  <HexagonButton
+                    padding='5px'
+                    background='red'
+                    color='white'
+                    width='50%'
+                    size='15px'
+                  >
+                    Нет
+                  </HexagonButton>
+                </Styled.FiftyModalButton>
+              </Styled.FiftyModalButtons>
+            </>
+          )}
         </Styled.FiftyModalBlock>
       </Modal>
       <Modal active={helpModalActive} setActive={setHelpModalActive}>

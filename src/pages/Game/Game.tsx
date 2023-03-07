@@ -7,6 +7,7 @@ import SettingsBlock from './components/SettingsBlock/SettingsBlock'
 
 const Game: FC = () => {
   const [gameHasStarted, setGameHasStarted] = useState(false)
+  const [fiftyFifty, setFiftyFifty] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
   const [numberOfQuestions, setNumberOfQuestions] = useState(0)
 
@@ -16,6 +17,8 @@ const Game: FC = () => {
         setNumberOfQuestions={setNumberOfQuestions}
         gameHasStarted={gameHasStarted}
         setGameHasStarted={setGameHasStarted}
+        setCurrentStep={setCurrentStep}
+        setFiftyFifty={setFiftyFifty}
       />
       <MainBlock
         currentStep={currentStep}
@@ -23,12 +26,18 @@ const Game: FC = () => {
         numberOfQuestions={numberOfQuestions}
         gameHasStarted={gameHasStarted}
       />
-      <HelpBlock gameHasStarted={gameHasStarted} />
+      <HelpBlock
+        gameHasStarted={gameHasStarted}
+        setFiftyFifty={setFiftyFifty}
+        fiftyFifty={fiftyFifty}
+      />
       <QuestionsBlock
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
         numberOfQuestions={numberOfQuestions}
         gameHasStarted={gameHasStarted}
+        setGameHasStarted={setGameHasStarted}
+        fiftyFifty={fiftyFifty}
       />
     </Styled.Root>
   )

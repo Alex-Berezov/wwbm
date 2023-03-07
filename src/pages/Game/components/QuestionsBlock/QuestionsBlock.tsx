@@ -9,6 +9,8 @@ interface QuestionsBlockProps {
   setCurrentStep: (currentStep: number) => void
   numberOfQuestions: number
   gameHasStarted: boolean
+  fiftyFifty: boolean
+  setGameHasStarted: (bool: boolean) => void
 }
 
 const QuestionsBlock: FC<QuestionsBlockProps> = ({
@@ -16,6 +18,8 @@ const QuestionsBlock: FC<QuestionsBlockProps> = ({
   setCurrentStep,
   numberOfQuestions,
   gameHasStarted,
+  setGameHasStarted,
+  fiftyFifty,
 }) => {
   const [question, setQuestion] = useState<string>('')
   const [answers, setAnswers] = useState<string[]>([])
@@ -25,21 +29,16 @@ const QuestionsBlock: FC<QuestionsBlockProps> = ({
   const [victory, setVictory] = useState(false)
   const { questions } = useAppSelector((state) => state.questionsReducer)
 
-  // console.log('====================================')
-  // console.log('currentStep >>', currentStep)
-  // console.log('====================================')
-
-  console.log('====================================')
-  console.log('gameHasStarted >>', gameHasStarted)
-  console.log('====================================')
-
   useEffect(() => {
     gameHasStarted &&
+      questions.length > 0 &&
       setAnswers([
         ...questions[currentStep]?.incorrect_answers,
         questions[currentStep]?.correct_answer,
       ])
-    gameHasStarted && setQuestion(questions[currentStep]?.question)
+    gameHasStarted &&
+      questions.length > 0 &&
+      setQuestion(questions[currentStep]?.question)
   }, [gameHasStarted, questions, currentStep])
 
   const selectedAnswer = (answer: string) => {
@@ -56,6 +55,21 @@ const QuestionsBlock: FC<QuestionsBlockProps> = ({
           setGameOver(true)
         }, 2000)
   }
+
+  useEffect(() => {
+    fiftyFifty &&
+      questions[currentStep]?.incorrect_answers.length > 2 &&
+      setAnswers([
+        questions[currentStep]?.incorrect_answers[0],
+        questions[currentStep]?.correct_answer,
+      ])
+  }, [fiftyFifty])
+
+  useEffect(() => {
+    setTimeout(() => {
+      gameOver && setGameHasStarted(false)
+    }, 3000)
+  }, [gameOver])
 
   return (
     <Styled.Root gameHasStarted={gameHasStarted}>

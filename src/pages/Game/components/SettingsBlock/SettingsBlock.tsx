@@ -9,12 +9,16 @@ interface SettingsBlockProps {
   setNumberOfQuestions: (num: number) => void
   gameHasStarted: boolean
   setGameHasStarted: (bool: boolean) => void
+  setFiftyFifty: (bool: boolean) => void
+  setCurrentStep: (num: number) => void
 }
 
 const SettingsBlock: FC<SettingsBlockProps> = ({
   setNumberOfQuestions,
   gameHasStarted,
   setGameHasStarted,
+  setCurrentStep,
+  setFiftyFifty,
 }) => {
   const dispatch = useAppDispatch()
   const { questionsAmount } = useAppSelector((state) => state.questionsReducer)
@@ -25,11 +29,13 @@ const SettingsBlock: FC<SettingsBlockProps> = ({
     setGameHasStarted(true)
     setNumberOfQuestions(questionsValue.value)
     dispatch(fetchQuestions(questionsValue.value))
+    setCurrentStep(0)
+    setFiftyFifty(false)
 
     setTimeout(() => {
       window.scrollTo(0, 10000)
     }, 1500)
-  }, [questionsValue])
+  }, [questionsValue.value])
 
   return (
     <Styled.Root>

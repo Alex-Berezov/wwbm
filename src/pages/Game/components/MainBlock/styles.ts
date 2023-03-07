@@ -24,7 +24,7 @@ export const Image = styled.img``
 export const QuestionsList = styled.div<MainBlockStylesProps>`
   width: ${(props) => (props.gameHasStarted ? '20%' : '0%')};
   display: ${(props) => (props.gameHasStarted ? 'flex' : 'none')};
-  flex-direction: column;
+  flex-direction: column-reverse;
   margin-left: 30px;
 `
 
