@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useCallback } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useAppSelector } from '../../../../hooks/redux'
 import { HexagonButton } from '../../../../UI/HexagonButton'
 import * as Styled from './styles'
