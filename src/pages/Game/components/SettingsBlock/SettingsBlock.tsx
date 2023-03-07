@@ -35,7 +35,14 @@ const SettingsBlock: FC<SettingsBlockProps> = ({
     setTimeout(() => {
       window.scrollTo(0, 10000)
     }, 1500)
-  }, [questionsValue.value])
+  }, [
+    dispatch,
+    questionsValue.value,
+    setCurrentStep,
+    setFiftyFifty,
+    setGameHasStarted,
+    setNumberOfQuestions,
+  ])
 
   return (
     <Styled.Root>

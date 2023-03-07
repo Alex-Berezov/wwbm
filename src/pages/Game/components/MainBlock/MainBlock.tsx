@@ -23,7 +23,7 @@ const MainBlock: FC<MainBlockProps> = ({
 
   useEffect(() => {
     setCustomStepList(stepList.slice(0, +numberOfQuestions))
-  }, [gameHasStarted, numberOfQuestions])
+  }, [gameHasStarted, numberOfQuestions, stepList])
 
   return (
     <Styled.Root gameHasStarted={gameHasStarted}>

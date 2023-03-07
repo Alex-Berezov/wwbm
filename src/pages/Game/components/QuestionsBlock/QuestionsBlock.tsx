@@ -63,13 +63,13 @@ const QuestionsBlock: FC<QuestionsBlockProps> = ({
         questions[currentStep]?.incorrect_answers[0],
         questions[currentStep]?.correct_answer,
       ])
-  }, [fiftyFifty])
+  }, [currentStep, fiftyFifty, questions])
 
   useEffect(() => {
     setTimeout(() => {
       gameOver && setGameHasStarted(false)
     }, 3000)
-  }, [gameOver])
+  }, [gameOver, setGameHasStarted])
 
   return (
     <Styled.Root gameHasStarted={gameHasStarted}>
