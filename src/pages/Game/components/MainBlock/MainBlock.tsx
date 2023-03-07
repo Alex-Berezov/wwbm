@@ -8,14 +8,12 @@ import { IStepList } from './../../../../models/IStepList'
 interface MainBlockProps {
   currentStep: number
   numberOfQuestions: number
-  setCurrentStep: (num: number) => void
   gameHasStarted: boolean
 }
 
 const MainBlock: FC<MainBlockProps> = ({
   currentStep,
   numberOfQuestions,
-  setCurrentStep,
   gameHasStarted,
 }) => {
   const stepList = useContext(ThemeContext)

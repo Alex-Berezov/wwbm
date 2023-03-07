@@ -22,7 +22,6 @@ const Game: FC = () => {
       />
       <MainBlock
         currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
         numberOfQuestions={numberOfQuestions}
         gameHasStarted={gameHasStarted}
       />
@@ -34,7 +33,6 @@ const Game: FC = () => {
       <QuestionsBlock
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
-        numberOfQuestions={numberOfQuestions}
         gameHasStarted={gameHasStarted}
         setGameHasStarted={setGameHasStarted}
         fiftyFifty={fiftyFifty}

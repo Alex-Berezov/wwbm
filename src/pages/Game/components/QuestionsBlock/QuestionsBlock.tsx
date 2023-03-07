@@ -7,7 +7,6 @@ import Modal from './../../../../UI/Modal/Modal'
 interface QuestionsBlockProps {
   currentStep: number
   setCurrentStep: (currentStep: number) => void
-  numberOfQuestions: number
   gameHasStarted: boolean
   fiftyFifty: boolean
   setGameHasStarted: (bool: boolean) => void
@@ -16,7 +15,6 @@ interface QuestionsBlockProps {
 const QuestionsBlock: FC<QuestionsBlockProps> = ({
   currentStep,
   setCurrentStep,
-  numberOfQuestions,
   gameHasStarted,
   setGameHasStarted,
   fiftyFifty,
@@ -27,6 +25,7 @@ const QuestionsBlock: FC<QuestionsBlockProps> = ({
   const [selected, setSelected] = useState('')
   const [gameOver, setGameOver] = useState(false)
   const [victory, setVictory] = useState(false)
+  const [usedfiftyFifty, setUsedfiftyFifty] = useState(false)
   const { questions } = useAppSelector((state) => state.questionsReducer)
 
   useEffect(() => {
@@ -64,12 +63,14 @@ const QuestionsBlock: FC<QuestionsBlockProps> = ({
 
   useEffect(() => {
     fiftyFifty &&
+      !usedfiftyFifty &&
       questions[currentStep]?.incorrect_answers.length > 2 &&
       setAnswers([
         questions[currentStep]?.incorrect_answers[0],
         questions[currentStep]?.correct_answer,
       ])
-  }, [currentStep, fiftyFifty, questions])
+    fiftyFifty && setUsedfiftyFifty(true)
+  }, [currentStep, fiftyFifty, questions, usedfiftyFifty])
 
   useEffect(() => {
     setTimeout(() => {
